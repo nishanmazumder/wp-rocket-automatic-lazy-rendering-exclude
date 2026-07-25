@@ -6,7 +6,7 @@
  * Author URI:  https://wp-rocket.me/
  * License:     GNU General Public License v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Version:     1.2.0
+ * Version:     1.2.3
  */
 
 namespace WP_Rocket\Helpers\alr_exclude;
@@ -24,6 +24,14 @@ function wpr_alr_exclusions( $exclusions ) {
 	if ( ! is_array( $exclusions ) ) {
 		$exclusions = array();
 	}
+
+	/*
+	 * Above-the-fold hero video.
+	 */
+	$exclusions[] = 'class="th-hero-wrapper hero-13 nm-video-hero"';
+	$exclusions[] = 'nm-video-hero';
+	$exclusions[] = 'nm-video-hero-media';
+	$exclusions[] = 'nm-video-hero-player';
 
 	/*
 	 * Existing BTI business section exclusion.
@@ -109,6 +117,16 @@ function bti_dynamic_popup_fallback_css() {
 	<style id="bti-dynamic-popup-compatibility">
 
 		/*
+		 * Hero video Automatic Lazy Rendering fallback.
+		 */
+		.nm-video-hero[data-wpr-lazyrender],
+		.nm-video-hero-media[data-wpr-lazyrender],
+		.nm-video-hero-player[data-wpr-lazyrender] {
+			content-visibility: visible !important;
+			contain-intrinsic-size: auto !important;
+		}
+
+		/*
 		 * Popup Builder Automatic Lazy Rendering fallback.
 		 */
 		[class*="sgpb-main-popup-data-container-"][data-wpr-lazyrender],
@@ -117,6 +135,12 @@ function bti_dynamic_popup_fallback_css() {
 			content-visibility: visible !important;
 		}
 
+		@media (max-width: 767px) {
+			.nm-properties-form-popup{
+				width: 100% !important;
+			}
+		}
+		
 		/*
 		 * Fancybox video popup size fallback.
 		 */
@@ -153,3 +177,26 @@ add_action(
 	__NAMESPACE__ . '\\bti_dynamic_popup_fallback_css',
 	100
 );
+
+/**
+ * Disable Automatic Lazy Rendering only on single BTI property pages.
+ *
+ * The check runs on the `wp` hook, after WordPress has prepared the main
+ * query, so conditional tags such as is_singular() are safe to use.
+ *
+ * @return void
+ */
+// function bti_disable_alr_on_single_property() {
+// 	if ( ! is_singular( 'bti_properties' ) ) {
+// 		return;
+// 	}
+
+// 	add_filter( 'rocket_lrc_optimization', '__return_false', PHP_INT_MAX );
+// }
+
+// add_action(
+// 	'wp',
+// 	__NAMESPACE__ . '\\bti_disable_alr_on_single_property',
+// 	1
+// );
+
