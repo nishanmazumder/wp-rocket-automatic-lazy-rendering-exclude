@@ -44,6 +44,7 @@ function wpr_alr_exclusions( $exclusions ) {
 	$exclusions[] = 'sg-popup-builder-content';
 	$exclusions[] = 'sgpb-popup-builder-content-html';
 	$exclusions[] = 'sgpb-main-popup-data-container-';
+	$exclusions[] = 'nm-schedule-popup__content';
 
 	return array_values( array_unique( $exclusions ) );
 }
